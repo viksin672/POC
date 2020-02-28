@@ -24,7 +24,7 @@ class Clients(APIView):
 		if serializer.is_valid():
 			#import pdb;pdb.set_trace()
 			#check the request client is present in db or not
-			check = clients.objects.all().filter(client = currClient , priority = currPriority)
+			check = clients.objects.all().filter(client=currClient,priority=currPriority)
 			if check.count() != 0 :
 				#loop through all clients order by priority
 				for index ,  val in enumerate(clients.objects.all().order_by('priority')):
@@ -32,8 +32,8 @@ class Clients(APIView):
 					if (val.client == currClient) and (val.priority >= currPriority):
 						print(val.client, val.priority, '----',currClient,currPriority)
 						#check for last available slot of client list present 
-						check2 = clients.objects.all().filter(client = currClient , priority = val.priority+1)
-						if(check2.count() == 0):
+						check2 = clients.objects.all().filter(client=currClient,priority=val.priority+1)
+						if check2.count() == 0:
 							#increment priority of last client
 							val.priority += 1
 							val.save()
