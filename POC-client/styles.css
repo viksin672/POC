@@ -1,0 +1,82 @@
+[type="date"] {
+  background:#fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png)  97% 50% no-repeat ;
+}
+[type="date"]::-webkit-inner-spin-button {
+  display: none;
+}
+[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+
+/* custom styles */
+body {
+  background: #e5e5e5;
+  font: 13px/1.4 Geneva, 'Lucida Sans', 'Lucida Grande', 'Lucida Sans Unicode', Verdana, sans-serif;
+}
+.desp{
+  padding-top: 3%;
+}
+.s-btn{
+  display: flex;
+  justify-content: center;
+  padding-top: 4%;
+}
+.dtable{
+  padding-top: 8%;
+}
+.container{
+  padding-top: 2%;
+}
+.frm-border{
+  border: 1px solid #d7d7d9;
+}
+form{
+  padding: 8%;
+}
+.bt-sbm{
+  background-color: #509fad;
+  border: #509fad;
+  color: white;
+  width:12%;
+  border-radius: 5px;
+}
+.bt-sbm:hover{
+  background-color: #1e8e9c;
+}
+.bt-sbm:active{
+  background-color: #1e8e9c;
+}
+nav{
+  background-color: #81898a;
+  color: white;
+}
+.footer {
+   left: 0px;
+   bottom: 0px;
+   width: 100%;
+   height: 30px;
+   margin: 0;
+   background-color: black;
+   color: white;
+   text-align: center;
+}
+.devlpr{
+  color: white;
+}
+
+.no-js #loader { display: none;  }
+.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+.se-pre-con {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: url("http://smallenvelop.com/wp-content/uploads/2014/08/Preloader_2.gif") center no-repeat #fff;
+}
+.s-mssg{
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+}

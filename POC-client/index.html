@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Task Manager</title>
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.debug.min.js"></script>
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg ">
+	  <span class="navbar-brand mb-0 h1">Task Priority Management</span>
+	</nav>
+	<div class="s-mssg alert alert-success"  role="alert">
+	  Record added successfully !!
+	</div>
+    <div class="container">
+    	<div class="frm-border">
+	    	<form name="client-form" id="frm" class="needs-validation" novalidate data-bind = "submit: postForm">
+			  <div class="form-row">
+			    <div class="col">
+			      <label>Title</label>
+			      <input type="text" class="form-control" placeholder="Title" data-bind = "value: title" required>
+			      <div class="invalid-feedback">
+			        Title is required.
+			      </div>
+			    </div>
+			    <div class="col">
+			      <label>Select Client</label>
+			      <select id="inputState" class="form-control" data-bind = "value: client">
+			        <option selected value="Client A">Client A</option>
+			        <option value="Client B">Client B</option>
+			        <option value="Client C">Client C</option>
+			      </select>
+			    </div>
+			    <div class="col">
+			      <label>Client Priority</label>
+			      <input type="number" class="form-control" min="1" max="100" data-bind = "value: priority" required>
+			      <div class="invalid-feedback">
+			        Please set client priority.
+			      </div>
+			    </div>
+			    <div class="col">
+	  		    	<label for="dateofbirth">Target Date</label>
+	                <input id="datefield" class="form-control" type="date" name="date" id="date"
+	                min="2019/02/26" data-bind = "value: date" required>
+	                <div class="invalid-feedback">
+			        Please select target date.
+			      </div>
+			    </div>
+			    <div class="col">
+			      <label>Product Area</label>
+			      <select id="inputState" class="form-control" data-bind = "value: area">
+			        <option selected value="Policies">Policies</option>
+			        <option value="Billing">Billing</option>
+			        <option value="Claims">Claims</option>
+			        <option value="Reports">Reports</option>
+			      </select>
+			    </div>
+			  </div>
+			  <div class="form-row">
+			  	<div class="col  desp">
+			  		<label>Description</label>
+			  		<textarea class="form-control" data-bind = "value: description" required></textarea>
+			  		<div class="invalid-feedback">
+				        Description is required.
+				    </div>
+			  	</div>
+			  </div>
+			 <div class="s-btn">
+			  <button class="bt-sbm" type="submit" >Submit</button>
+			</div>
+			</form>
+		</div>
+		<div class="dtable">
+			<table class="table">
+			  <thead class="thead-light">
+			    <tr>
+			      <th scope="col">Title</th>
+			      <th scope="col">Description</th>
+			      <th scope="col">Client</th>
+			      <th scope="col">Client Priority</th>
+			      <th scope="col">Target Date</th>
+			      <th scope="col">Product Area</th>
+			    </tr>
+			  </thead>
+			  <tbody id="t-body">
+			  </tbody>
+			</table>
+		</div>
+    </div>
+    <div class="footer">
+    	<span class="devlpr">Vivek Singh (INT142)</span>
+	</div>
+</body>
+<div class="se-pre-con"></div>
+    <script>
+   
+	var ViewModel = function() {
+
+        self = this;
+
+		function getData(){
+			$.ajax({
+			async : false,
+			url :'http://localhost:8000/api/clientlist/',
+			type: 'GET',
+			dataType: 'json',
+			contentType: 'application/json',
+			success: function(data){
+				addTable(data);
+			},
+			error:function(err){
+				console.log(err);
+			}})
+		}
+		 
+	    function addTable (data){
+	    	 $('#t-body').html("");
+	    	data.map(d=>{
+	    		$('#t-body').append(`<tr>
+			      <th scope="row" >${d.title}</th>
+			      <td>${d.description}</td>
+			      <td>${d.client}</td>
+			      <td>${d.priority}</td>
+			      <td>${d.date}</td>
+			      <td>${d.area}</td>
+			    </tr>`);
+	    	})
+	    }
+        
+        this.title = ko.observable('');
+        this.client = ko.observable('');
+        this.priority = ko.observable(1);
+        this.date = ko.observable('');
+        this.area = ko.observable('');
+        this.description = ko.observable('');
+        this.priority(Number(this.priority()));
+
+
+		this.postForm = function(){
+			console.log(typeof(this.priority))
+			console.log(this.priority)
+            $.post('http://localhost:8000/api/clientlist/',
+			  {
+            	'title':this.title,
+            	'client':this.client,
+            	'priority':this.priority,
+            	'date':this.date,
+            	'area':this.area,
+            	'description':this.description
+            },
+			  function(data, status){
+			    //alert("\nStatus: " + status);
+                $('.s-mssg').css('opacity','1')
+			    getData();
+			  });
+            //$('input, textarea').val('');
+		}
+             
+
+		getData();
+
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+		var yyyy = today.getFullYear();
+		if(dd<10){
+        dd='0'+dd
+	    } 
+	    if(mm<10){
+	        mm='0'+mm
+	    } 
+			today = yyyy+'-'+mm+'-'+dd;
+	        document.getElementById("datefield").setAttribute("min", today);
+		}
+		ko.applyBindings(new ViewModel());
+
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+
+	$(window).on("load",function(){
+		// Animate loader off screen
+		$(".se-pre-con").fadeOut("slow");
+	});
+
+</script>
+
+
+</html>
