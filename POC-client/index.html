@@ -106,7 +106,7 @@
 		function getData(){
 			$.ajax({
 			async : false,
-			url :'http://localhost:8000/api/clientlist/',
+			url :'https://fierce-journey-59463.herokuapp.com/api/clientlist/',
 			type: 'GET',
 			dataType: 'json',
 			contentType: 'application/json',
@@ -144,7 +144,7 @@
 		this.postForm = function(){
 			console.log(typeof(this.priority))
 			console.log(this.priority)
-            $.post('http://localhost:8000/api/clientlist/',
+            $.post('https://fierce-journey-59463.herokuapp.com/api/clientlist/',
 			  {
             	'title':this.title,
             	'client':this.client,
